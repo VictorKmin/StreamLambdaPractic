@@ -17,7 +17,7 @@ public class Main {
 //        contactList.add(test2);
 //        contactList.add(test3);
 //        contactList.add(test4);
-        dao1.save(1);
+        dao1.save(test1);
 
 //        System.out.println(contactList);
 //        dao1.delete(1);

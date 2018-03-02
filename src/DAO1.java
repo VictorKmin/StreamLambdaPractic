@@ -5,8 +5,8 @@ public class DAO1 implements DAO {
     Database database = new Database();
 
     @Override
-    public void save(int id) {
-        database.getContactList().add(id, findOne(id));
+    public void save(Contact contact) {
+        database.getContactList().add(contact);
     }
 
     @Override
