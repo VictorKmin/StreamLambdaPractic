@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Database {
-    private List<Contact> contactList = new ArrayList<>(100);
+    private List<Contact> contactList = new ArrayList<>();
 
     public Database() {
     }
