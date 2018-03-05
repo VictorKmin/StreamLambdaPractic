@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         DAO1 dao1 = new DAO1();
 
-        List<Contact> contactList = new ArrayList<>();
+//        List<Contact> contactList = new ArrayList<>();
 
         Contact test1 = new Contact(1,"Igor",Company.APPLE, "Pupkin", "pupkin@com", "0676705260",Department.FACTORY);
         Contact test2 = new Contact(2,"Vasya", Company.INTEL, "Sidorov", "vasya@com", "0676708642", Department.SUPPORT);
@@ -37,40 +37,43 @@ public class Main {
         dao1.save(test3);
         dao1.save(test4);
 //
-        contactList.add(dao1.findOne(1));
+//        contactList.add(dao1.findOne(1));
 
-        System.out.println(contactList);
+//        System.out.println(contactList);
 
-        Stream<Contact> stream = contactList.stream();
+        Stream<Contact> nonRepeatstream = dao1.findAll().stream();
 
-//            System.out.println("Всі унікальні");
-//            List<Contact> nonRepeat = stream
-                    // //Шукаю не повторні значення
-//                    .distinct()
-        //              //Закидаю їх в ліст
-//                    .collect(Collectors.toList());
-//            System.out.println(nonRepeat);
+            System.out.println("Всі унікальні");
+            List<Contact> nonRepeat = nonRepeatstream
+                     //Шукаю не повторні значення
+                    .distinct()
+                      //Закидаю їх в ліст
+                    .collect(Collectors.toList());
+            System.out.println(nonRepeat);
 
-//        System.out.println("Унікальні з одного департамента");
-//            List<Contact> nonRepeatInDept = stream
-//                    .distinct()
-        //              //Порівнюю всі контакти з тим, що б у них був сапорт
-//                    .filter(contact -> contact.getDepartment() == Department.SUPPORT)
-//                    .collect(Collectors.toList());
-//        System.out.println(nonRepeatInDept);
-
-
-//        System.out.println("Унікальні з dept а посортовані за email");
-//        List<Contact> nonRepeatEmailSort = stream
-//                .distinct()
-//                .filter(contact -> contact.getDepartment() == Department.SUPPORT)
-//                .sorted(Comparator.comparing(Contact::getEmail))
-//                .collect(Collectors.toList());
-//        System.out.println(nonRepeatEmailSort);
+        Stream<Contact> nonReapeatDeptSteam = dao1.findAll().stream();
+        System.out.println("Унікальні з одного департамента");
+            List<Contact> nonRepeatInDept = nonReapeatDeptSteam
+                    .distinct()
+                      //Порівнюю всі контакти з тим, що б у них був сапорт
+                    .filter(contact -> contact.getDepartment() == Department.SUPPORT)
+                    .collect(Collectors.toList());
+        System.out.println(nonRepeatInDept);
 
 
+        Stream<Contact> sortetToEmailStram = dao1.findAll().stream();
+        System.out.println("Унікальні з dept а посортовані за email");
+        List<Contact> nonRepeatEmailSort = sortetToEmailStram
+                .distinct()
+                .filter(contact -> contact.getDepartment() == Department.SUPPORT)
+                .sorted(Comparator.comparing(Contact::getEmail))
+                .collect(Collectors.toList());
+        System.out.println(nonRepeatEmailSort);
+
+
+        Stream<Contact> companyGroupedStream = dao1.findAll().stream();
         System.out.println("Унікальні групуємо по компанії");
-        List<Contact> groupedByIntel = stream
+        List<Contact> groupedByIntel = companyGroupedStream
                 //Шукаю однаковы значення
                 .distinct()
                 //По компаныї Інтел
@@ -81,7 +84,7 @@ public class Main {
                 System.out.println(groupedByIntel);
 
                 // Перестворив стрім на test (Кидало помилку шо стрім завершено)
-        Stream<Contact> test = contactList.stream();
+        Stream<Contact> test = dao1.findAll().stream();
          List<Contact> groupedbyAplle = test
                 .filter(contact -> contact.getCompany() == Company.APPLE)
                 .distinct()
@@ -90,7 +93,7 @@ public class Main {
 
 
         // Перестворив стрім на Hello. причина що і вище
-        Stream<Contact> hello = contactList.stream();
+        Stream<Contact> hello = dao1.findAll().stream();
         List<Contact> groupedByMS = hello
                 .distinct()
                 .filter(contact -> contact.getCompany() == Company.MICROSOFT)
